@@ -129,19 +129,26 @@ namespace OrderManagement
     {
         public string Customer { set; get; }
         public int ID { set; get; }
-        public List<OrderItem> item;
+        public List<OrderItem> items;
         public Order(string customer, int id, List<OrderItem> item)
         {
             Customer = customer;
             ID = id;
-            this.item = item;
+            this.items = item;
+        }
+        public double SumCost()
+        {
+            double sum=0;
+            foreach (OrderItem item in items)
+                sum += item.Price * item.Quantity;
+            return sum;
         }
 
         public override string ToString()
         {
             StringBuilder itemlist = new StringBuilder(20);
-            for (int i = 0; i < item.ToArray().Length; i++)
-                itemlist.Append(item[i].ToString() + "\n");
+            for (int i = 0; i < items.ToArray().Length; i++)
+                itemlist.Append(items[i].ToString() + "\n");
             return "Client's name: " + Customer + 
                    "\nOrder's ID: " + ID +
                    "\n" + itemlist;
@@ -159,7 +166,7 @@ namespace OrderManagement
             var hashCode = 1162405519;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Customer);
             hashCode = hashCode * -1521134295 + ID.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<OrderItem>>.Default.GetHashCode(item);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<OrderItem>>.Default.GetHashCode(items);
             return hashCode;
         }
     }
@@ -192,17 +199,17 @@ namespace OrderManagement
         }
         public List<Order> FindOrder(Func<Order,bool> action)
         {
-            var query = orders.Where(action);
+            var query = orders.Where(action).OrderBy(order=>order.SumCost());
             return query.ToList();
         }
         public List<Order> FindOrder(int id)
         {
-            var query = orders.Where(o => o.ID == id);
+            var query = orders.Where(o => o.ID == id).OrderBy(order => order.SumCost());
             return query.ToList();
         }
         public List<Order> FindOrder(string customer)
         {
-            var query = orders.Where(o => o.Customer == customer);
+            var query = orders.Where(o => o.Customer == customer).OrderBy(order => order.SumCost());
             return query.ToList();
 
         }
