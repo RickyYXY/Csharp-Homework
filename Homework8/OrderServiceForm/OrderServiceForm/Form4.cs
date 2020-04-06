@@ -21,7 +21,7 @@ namespace OrderServiceForm
             //textBox1.Text = "default";
             textBox1.DataBindings.Add("Text", this, "stringName");
             Index = 3;
-            //radioButton3.Checked = true;
+            radioButton3.Checked = true;
             Flag = false;
         }
 

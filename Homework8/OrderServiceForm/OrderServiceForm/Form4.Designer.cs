@@ -126,7 +126,6 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.stringName = "Form4";
             this.Text = "查询订单";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
