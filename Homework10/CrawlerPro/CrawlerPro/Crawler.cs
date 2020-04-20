@@ -38,22 +38,25 @@ namespace CrawlerForm
 
         //锁对象
         private string gridLock = "gridLock";
+        private string fileLock = "fileLock";
+
+        private int downLoadNum = 1;
 
         public Crawler()
         {
-            MaxPage = 100;
+            MaxPage = 25;
             HtmlEncoding = Encoding.UTF8;
         }
 
         public void Start()
         {
             urls.Clear();
+            downLoadNum = 1;
             pending = new ConcurrentQueue<string>();
             pending.Enqueue(StartURL);
             List<Task> tasks = new List<Task>();
             do
             {
-                tasks.RemoveAll(task => task.IsCompleted || task.IsFaulted);
                 pending.TryDequeue(out string url);
                 try
                 {
@@ -72,22 +75,20 @@ namespace CrawlerForm
                             inner.GetType(), inner.Source);
                     }
                 }
-            } while (tasks.Count > 0);
+            } while (tasks.Count < this.MaxPage);
+            Task.WaitAll(tasks.ToArray());
             CrawlerStopped(this);
         }
 
         private void ConcurrentDownLoad(string url)
-        { 
-            if (urls.Count < this.MaxPage)
+        {
+            urls[url] = true;
+            string html = DownLoad(url); // 下载
+            lock (gridLock)
             {
-                string html = DownLoad(url); // 下载
-                urls[url] = true;
-                lock (gridLock)
-                {
-                    PageDownloaded(this, url, "success");
-                }
-                Parse(html, url);//解析,并加入新的链接
+                PageDownloaded(this, url, "success");
             }
+            Parse(html, url);//解析,并加入新的链接
         }
 
         private string DownLoad(string url)
@@ -95,11 +96,11 @@ namespace CrawlerForm
             WebClient webClient = new WebClient();
             webClient.Encoding = Encoding.UTF8;
             string html = webClient.DownloadString(url);
-            string fileName;
-            lock(urls)
+            lock (fileLock)
             {
-                fileName = urls.Count.ToString();
+                string fileName = downLoadNum.ToString();
                 File.WriteAllText(fileName, html, Encoding.UTF8);
+                downLoadNum++;
             }
             return html;
         }
