@@ -22,12 +22,12 @@ namespace OrderForm
         {
             InitializeComponent();
             orderService = new OrderService();
-            Order order = new Order(1, new Customer("1", "li"), new List<OrderItem>());
-            order.AddItem(new OrderItem(1, new Goods("1", "apple", 100.0), 10));
-            orderService.AddOrder(order);
-            Order order2 = new Order(2, new Customer("2", "zhang"), new List<OrderItem>());
-            order2.AddItem(new OrderItem(1, new Goods("2", "egg", 200.0), 10));
-            orderService.AddOrder(order2);
+            //Order order = new Order(1, new Customer("1", "li"), new List<OrderItem>());
+            //order.AddItem(new OrderItem(1, new Goods("1", "apple", 100.0), 10));
+            //orderService.AddOrder(order);
+            //Order order2 = new Order(2, new Customer("2", "zhang"), new List<OrderItem>());
+            //order2.AddItem(new OrderItem(1, new Goods("2", "egg", 200.0), 10));
+            //orderService.AddOrder(order2);
             orderBindingSource.DataSource = orderService.Orders;
             cbField.SelectedIndex = 0;
             txtValue.DataBindings.Add("Text", this, "Keyword");
