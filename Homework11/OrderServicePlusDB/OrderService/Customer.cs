@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrderApp
 {
@@ -11,9 +14,12 @@ namespace OrderApp
         public string CustomerID { get; set; }
         public string Name { get; set; }
 
-        public Customer()
-        {
-        }
+        //public int OrderID { set; get; }//外键
+
+        [Required]
+        public Order Order { get; set; }
+         
+        public Customer() { }
 
         public Customer(string iD, string name)
         {

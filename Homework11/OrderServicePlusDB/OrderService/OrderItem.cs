@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrderApp
 {
@@ -14,10 +15,11 @@ namespace OrderApp
      **/
     public class OrderItem
     {
-        [Key]
-        public int OrderItemID { get; set; } //序号
+        public int OrderItemID { get; set; } //主键
 
-        public string GoodsID { get; set; }//foreign key
+        public int OrderID { get; set; }//外键
+        public Order Order { get; set; }
+
         public Goods GoodsItem { get; set; }
 
         public string GoodsName { get => GoodsItem != null ? this.GoodsItem.Name : ""; }
@@ -34,7 +36,6 @@ namespace OrderApp
             this.OrderItemID = index;
             this.GoodsItem = goods;
             this.Quantity = quantity;
-            this.GoodsID = GoodsItem.GoodsID;
         }
 
         public double TotalPrice

@@ -19,14 +19,14 @@ namespace OrderApp
 
         public int OrderID { get; set; }//主键
 
-        public string CustomerID { get; set; }//外键
         public Customer Customer { get; set; }
 
         public string CustomerName { get => (Customer != null) ? Customer.Name : ""; }
 
         public DateTime CreateTime { get; set; }
 
-
+        public List<OrderItem> OrderItems { get; set; }
+     
         public Order() { OrderItems = new List<OrderItem>(); CreateTime = DateTime.Now; }
 
         public Order(int orderId, Customer customer, List<OrderItem> items)
@@ -35,18 +35,13 @@ namespace OrderApp
             this.Customer = customer;
             this.CreateTime = DateTime.Now;
             this.OrderItems = (items == null) ? new List<OrderItem>() : items;
-            this.CustomerID = Customer.CustomerID;
         }
 
-        //public uint OrderItemID { get; set; }//外键
-        public List<OrderItem> OrderItems
-        { //1对多
-            get;set;
-        }
+        
 
         public double TotalPrice
         {
-            get => OrderItems.Sum(item => item.TotalPrice);
+            get => OrderItems == null ? 0 : OrderItems.Sum(item => item.TotalPrice);
         }
 
         public void AddItem(OrderItem orderItem)

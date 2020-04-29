@@ -14,6 +14,7 @@ namespace OrderApp
             Database.SetInitializer(
                 new DropCreateDatabaseIfModelChanges<OScontext>());
         }
+
         public DbSet<Goods> Goods { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }

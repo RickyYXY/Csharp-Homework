@@ -43,21 +43,20 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dbvOrders = new System.Windows.Forms.DataGridView();
-            this.orderIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.customerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.totalPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dbvItems = new System.Windows.Forms.DataGridView();
-            this.indexDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.goodsNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.totalPriceDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.itemsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.orderBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.goodsNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalPriceDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.customerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -66,9 +65,9 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dbvOrders)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbvItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.itemsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -195,7 +194,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 84);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.panel1.Padding = new System.Windows.Forms.Padding(10);
             this.panel1.Size = new System.Drawing.Size(846, 341);
             this.panel1.TabIndex = 3;
             // 
@@ -222,7 +221,7 @@
             this.dbvOrders.AutoGenerateColumns = false;
             this.dbvOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dbvOrders.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.orderIdDataGridViewTextBoxColumn,
+            this.Column1,
             this.customerNameDataGridViewTextBoxColumn,
             this.createTimeDataGridViewTextBoxColumn,
             this.totalPriceDataGridViewTextBoxColumn});
@@ -235,11 +234,82 @@
             this.dbvOrders.TabIndex = 6;
             this.dbvOrders.DoubleClick += new System.EventHandler(this.dbvOrders_DoubleClick);
             // 
-            // orderIdDataGridViewTextBoxColumn
+            // dbvItems
             // 
-            this.orderIdDataGridViewTextBoxColumn.DataPropertyName = "OrderId";
-            this.orderIdDataGridViewTextBoxColumn.HeaderText = "订单号";
-            this.orderIdDataGridViewTextBoxColumn.Name = "orderIdDataGridViewTextBoxColumn";
+            this.dbvItems.AllowUserToAddRows = false;
+            this.dbvItems.AutoGenerateColumns = false;
+            this.dbvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dbvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.goodsNameDataGridViewTextBoxColumn,
+            this.dataGridViewTextBoxColumn2,
+            this.UnitPrice,
+            this.totalPriceDataGridViewTextBoxColumn1});
+            this.dbvItems.DataSource = this.itemsBindingSource;
+            this.dbvItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dbvItems.Location = new System.Drawing.Point(0, 0);
+            this.dbvItems.Name = "dbvItems";
+            this.dbvItems.RowTemplate.Height = 23;
+            this.dbvItems.Size = new System.Drawing.Size(404, 321);
+            this.dbvItems.TabIndex = 0;
+            // 
+            // UnitPrice
+            // 
+            this.UnitPrice.DataPropertyName = "UnitPrice";
+            this.UnitPrice.HeaderText = "单价";
+            this.UnitPrice.Name = "UnitPrice";
+            this.UnitPrice.ReadOnly = true;
+            // 
+            // itemsBindingSource
+            // 
+            this.itemsBindingSource.DataMember = "OrderItems";
+            this.itemsBindingSource.DataSource = this.orderBindingSource;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "XML Files (*.xml)|*.xml";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "XML Files (*.xml)|*.xml";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(456, 426);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(76, 21);
+            this.textBox1.TabIndex = 3;
+            // 
+            // orderBindingSource
+            // 
+            this.orderBindingSource.DataSource = typeof(OrderApp.Order);
+            // 
+            // goodsNameDataGridViewTextBoxColumn
+            // 
+            this.goodsNameDataGridViewTextBoxColumn.DataPropertyName = "GoodsName";
+            this.goodsNameDataGridViewTextBoxColumn.HeaderText = "货物";
+            this.goodsNameDataGridViewTextBoxColumn.Name = "goodsNameDataGridViewTextBoxColumn";
+            this.goodsNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "Quantity";
+            this.dataGridViewTextBoxColumn2.HeaderText = "数量";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // totalPriceDataGridViewTextBoxColumn1
+            // 
+            this.totalPriceDataGridViewTextBoxColumn1.DataPropertyName = "TotalPrice";
+            this.totalPriceDataGridViewTextBoxColumn1.HeaderText = "总价";
+            this.totalPriceDataGridViewTextBoxColumn1.Name = "totalPriceDataGridViewTextBoxColumn1";
+            this.totalPriceDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "OrderID";
+            this.Column1.HeaderText = "订单编号";
+            this.Column1.Name = "Column1";
             // 
             // customerNameDataGridViewTextBoxColumn
             // 
@@ -260,84 +330,6 @@
             this.totalPriceDataGridViewTextBoxColumn.HeaderText = "总价";
             this.totalPriceDataGridViewTextBoxColumn.Name = "totalPriceDataGridViewTextBoxColumn";
             this.totalPriceDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // orderBindingSource
-            // 
-            this.orderBindingSource.DataSource = typeof(OrderApp.Order);
-            // 
-            // dbvItems
-            // 
-            this.dbvItems.AllowUserToAddRows = false;
-            this.dbvItems.AutoGenerateColumns = false;
-            this.dbvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dbvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.indexDataGridViewTextBoxColumn,
-            this.goodsNameDataGridViewTextBoxColumn,
-            this.dataGridViewTextBoxColumn2,
-            this.UnitPrice,
-            this.totalPriceDataGridViewTextBoxColumn1});
-            this.dbvItems.DataSource = this.itemsBindingSource;
-            this.dbvItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dbvItems.Location = new System.Drawing.Point(0, 0);
-            this.dbvItems.Name = "dbvItems";
-            this.dbvItems.RowTemplate.Height = 23;
-            this.dbvItems.Size = new System.Drawing.Size(404, 321);
-            this.dbvItems.TabIndex = 0;
-            // 
-            // indexDataGridViewTextBoxColumn
-            // 
-            this.indexDataGridViewTextBoxColumn.DataPropertyName = "Index";
-            this.indexDataGridViewTextBoxColumn.HeaderText = "序号";
-            this.indexDataGridViewTextBoxColumn.Name = "indexDataGridViewTextBoxColumn";
-            // 
-            // goodsNameDataGridViewTextBoxColumn
-            // 
-            this.goodsNameDataGridViewTextBoxColumn.DataPropertyName = "GoodsName";
-            this.goodsNameDataGridViewTextBoxColumn.HeaderText = "货物";
-            this.goodsNameDataGridViewTextBoxColumn.Name = "goodsNameDataGridViewTextBoxColumn";
-            this.goodsNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "Quantity";
-            this.dataGridViewTextBoxColumn2.HeaderText = "数量";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // UnitPrice
-            // 
-            this.UnitPrice.DataPropertyName = "UnitPrice";
-            this.UnitPrice.HeaderText = "单价";
-            this.UnitPrice.Name = "UnitPrice";
-            this.UnitPrice.ReadOnly = true;
-            // 
-            // totalPriceDataGridViewTextBoxColumn1
-            // 
-            this.totalPriceDataGridViewTextBoxColumn1.DataPropertyName = "TotalPrice";
-            this.totalPriceDataGridViewTextBoxColumn1.HeaderText = "总价";
-            this.totalPriceDataGridViewTextBoxColumn1.Name = "totalPriceDataGridViewTextBoxColumn1";
-            this.totalPriceDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // itemsBindingSource
-            // 
-            this.itemsBindingSource.DataMember = "OrderItems";
-            this.itemsBindingSource.DataSource = this.orderBindingSource;
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "XML Files (*.xml)|*.xml";
-            // 
-            // saveFileDialog1
-            // 
-            this.saveFileDialog1.Filter = "XML Files (*.xml)|*.xml";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(456, 426);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(76, 21);
-            this.textBox1.TabIndex = 3;
             // 
             // FormMain
             // 
@@ -360,9 +352,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dbvOrders)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbvItems)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.itemsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -398,14 +390,15 @@
     private System.Windows.Forms.BindingSource orderBindingSource;
     private System.Windows.Forms.BindingSource itemsBindingSource;
     private System.Windows.Forms.DataGridViewTextBoxColumn orderIdDataGridViewTextBoxColumn;
-    private System.Windows.Forms.DataGridViewTextBoxColumn customerNameDataGridViewTextBoxColumn;
-    private System.Windows.Forms.DataGridViewTextBoxColumn createTimeDataGridViewTextBoxColumn;
-    private System.Windows.Forms.DataGridViewTextBoxColumn totalPriceDataGridViewTextBoxColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn indexDataGridViewTextBoxColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn goodsNameDataGridViewTextBoxColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
     private System.Windows.Forms.DataGridViewTextBoxColumn UnitPrice;
     private System.Windows.Forms.DataGridViewTextBoxColumn totalPriceDataGridViewTextBoxColumn1;
-  }
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn customerNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createTimeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalPriceDataGridViewTextBoxColumn;
+    }
 }
 

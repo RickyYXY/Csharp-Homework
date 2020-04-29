@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
 namespace OrderApp
 {
@@ -20,6 +20,14 @@ namespace OrderApp
 
         public OrderService()
         {
+            //using (var db = new OScontext())
+            //{
+            //    orders = db.Orders
+            //    .Include(o => o.Customer)
+            //    .Include(o => o.OrderItems)
+            //    .Include(o=>o.OrderItems.Select(item=>item.GoodsItem))
+            //    .ToList();
+            //}
             //orders = new List<Order>();
         }
 
@@ -30,7 +38,12 @@ namespace OrderApp
             {
                 using (var db = new OScontext())
                 {
-                    return db.Orders.ToList();
+                    var orders = db.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.OrderItems)
+                    .Include(o => o.OrderItems.Select(item => item.GoodsItem))
+                        .ToList();
+                    return orders;
                 }
             }
         }
@@ -40,26 +53,31 @@ namespace OrderApp
             using (var db = new OScontext())
             {
                 var orders = db.Orders
-                    .Include("Customer")
+                    .Include(o => o.Customer)
                     .Include(o => o.OrderItems)
-                        .ThenInclude(OrderItem => OrderItem.GoodsItem)
+                    .Include(o => o.OrderItems.Select(item => item.GoodsItem))
                     .Where(o => o.OrderID == id)
                     .FirstOrDefault();
                 return orders;
             }
-            //return orders.Where(o => o.OrderId == id).FirstOrDefault();
+            //return orders.Where(o => o.OrderID == id).FirstOrDefault();
         }
 
         public void AddOrder(Order order)
         {
             //if (orders.Contains(order))
-            //  throw new ApplicationException($"添加错误: 订单{order.OrderId} 已经存在了!");
+            //    throw new ApplicationException($"添加错误: 订单{order.OrderID} 已经存在了!");
             using (var db = new OScontext())
             {
-                if (db.Orders.Select(o => o.OrderID).Contains(order.OrderID))
+                if(db.Orders.Select(o=>o.OrderID).Contains(order.OrderID))
                     throw new ApplicationException($"添加错误: 订单{order.OrderID} 已经存在了!");
                 db.Orders.Add(order);
                 db.SaveChanges();
+                //orders = db.Orders
+                //    .Include(o => o.Customer)
+                //    .Include(o => o.OrderItems)
+                //    .Include(o => o.OrderItems.Select(item => item.GoodsItem))
+                //    .ToList();
             }
             //orders.Add(order);
         }
@@ -67,11 +85,12 @@ namespace OrderApp
         public void RemoveOrder(int orderId)
         {
             Order order = GetOrder(orderId);
+            //orders.Remove(order);
             using (var db = new OScontext())
             {
                 if (order != null)
                 {
-                    //orders.Remove(order);
+
                     db.Orders.Remove(order);
                     db.SaveChanges();
                 }

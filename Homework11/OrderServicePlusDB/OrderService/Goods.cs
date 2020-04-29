@@ -5,18 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace OrderApp
 {
     public class Goods
     {
-        public string GoodsID { get; set; }
+        public string GoodsID { get; set; }//主键
         public string Name { get; set; }
         public double Price { get; set; }
 
-        public Goods()
-        {
-        }
+        //public int OrderItemID { get; set; }//外键
+
+        [Required]
+        public OrderItem OrderItem { get; set; }
+
+        public Goods() { }
 
         public Goods(string iD, string name, double price)
         {
