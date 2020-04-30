@@ -18,14 +18,15 @@ namespace OrderForm
         public FormEdit()
         {
             InitializeComponent();
-            using (var db = new OScontext())
-            {
-                foreach(Customer c in db.Customers)
-                {
-                    customerBindingSource.Add(c);
-                }
-            }    
-            //customerBindingSource.Add(new Customer("2", "zhang"));
+            //using (var db = new OScontext())
+            //{
+            //    foreach(Customer c in db.Customers)
+            //    {
+            //        customerBindingSource.Add(c);
+            //    }
+            //}
+            customerBindingSource.Add(new Customer("1", "li"));
+            customerBindingSource.Add(new Customer("2", "zhang"));
 
         }
 
@@ -48,12 +49,17 @@ namespace OrderForm
             {
                 if (formItemEdit.ShowDialog() == DialogResult.OK)
                 {
-                    int index = 0;
-                    if (CurrentOrder.OrderItems.Count != 0)
+                    //int index = 0;
+                    //if (CurrentOrder.OrderItems.Count != 0)
+                    //{
+                    //    index = CurrentOrder.OrderItems.Max(i => i.OrderItemID) + 1;
+                    //}
+                    using (var db = new OScontext())
                     {
-                        index = CurrentOrder.OrderItems.Max(i => i.OrderItemID) + 1;
-                    }
-                    formItemEdit.OrderItem.OrderItemID = index;
+                        formItemEdit.OrderItem.OrderItemID = db.OrderItems.Count()+1;
+                        int newID = db.Goods.Count() + 1;
+                        formItemEdit.OrderItem.GoodsItem.GoodsID = newID.ToString();
+                    }    
                     CurrentOrder.AddItem(formItemEdit.OrderItem);
                     itemsBindingSource.ResetBindings(false);
                 }
@@ -67,7 +73,12 @@ namespace OrderForm
         private void btnSave_Click(object sender, EventArgs e)
         {
             //TODO 加上订单合法性验证
-            CurrentOrder.OrderID = Int32.Parse(txtOrderId.Text);
+            //CurrentOrder.OrderID = Int32.Parse(txtOrderId.Text);
+            using (var db = new OScontext())
+            {
+                int newID = db.Customers.Count() + 1;
+                CurrentOrder.Customer.CustomerID = newID.ToString();
+            }
             this.Close();
         }
 

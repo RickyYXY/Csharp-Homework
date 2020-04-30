@@ -52,13 +52,13 @@ namespace OrderApp
         {
             using (var db = new OScontext())
             {
-                var orders = db.Orders
+                var order = db.Orders
                     .Include(o => o.Customer)
                     .Include(o => o.OrderItems)
                     .Include(o => o.OrderItems.Select(item => item.GoodsItem))
                     .Where(o => o.OrderID == id)
                     .FirstOrDefault();
-                return orders;
+                return order;
             }
             //return orders.Where(o => o.OrderID == id).FirstOrDefault();
         }
@@ -84,13 +84,22 @@ namespace OrderApp
 
         public void RemoveOrder(int orderId)
         {
-            Order order = GetOrder(orderId);
             //orders.Remove(order);
             using (var db = new OScontext())
             {
+                var order = db.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.OrderItems)
+                    .Include(o => o.OrderItems.Select(item => item.GoodsItem))
+                    .FirstOrDefault(o => o.OrderID == orderId);
                 if (order != null)
                 {
-
+                    for(int i=0;i<order.OrderItems.Count;i++)
+                    {
+                        db.Goods.Remove(order.OrderItems[i].GoodsItem);
+                        db.OrderItems.Remove(order.OrderItems[i]);
+                    }
+                    db.Customers.Remove(order.Customer);
                     db.Orders.Remove(order);
                     db.SaveChanges();
                 }

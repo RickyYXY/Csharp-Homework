@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using Microsoft.EntityFrameworkCore;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.ComponentModel.DataAnnotations;
 
 namespace OrderApp
