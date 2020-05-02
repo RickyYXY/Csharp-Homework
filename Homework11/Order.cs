@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using System.Data.Entity;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrderApp
 {
-
-    /**
-     **/
-    public class Order :IComparable<Order>
+    public class Order : IComparable<Order>
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None), Key] //取消自增
-        public int OrderID { get; set; }//主键
-
+        public int OrderID { get; set; }
+        
+        [Required]
         public Customer Customer { get; set; }
 
         public string CustomerName { get => (Customer != null) ? Customer.Name : ""; }
@@ -25,8 +23,16 @@ namespace OrderApp
         public DateTime CreateTime { get; set; }
 
         public List<OrderItem> OrderItems { get; set; }
-     
-        public Order() { OrderItems = new List<OrderItem>(); CreateTime = DateTime.Now; }
+
+        public double TotalPrice
+        {
+            get => OrderItems.Sum(item => item.TotalPrice);
+        }
+
+        public Order() {
+            OrderItems = new List<OrderItem>();
+            CreateTime = DateTime.Now;
+        }
 
         public Order(int orderId, Customer customer, List<OrderItem> items)
         {
@@ -36,22 +42,29 @@ namespace OrderApp
             this.OrderItems = (items == null) ? new List<OrderItem>() : items;
         }
 
-        
-
-        public double TotalPrice
-        {
-            get => OrderItems == null ? 0 : OrderItems.Sum(item => item.TotalPrice);
-        }
-
         public void AddItem(OrderItem orderItem)
         {
             if (OrderItems.Contains(orderItem))
                 throw new ApplicationException($"添加错误：订单项{orderItem.GoodsName} 已经存在!");
-            OrderItems.Add(orderItem);
+            orderItem.OrderID = OrderID;
+            orderItem.Order = this;
+            using (OrderContext context = new OrderContext())
+                //{
+                //   context.OrderItems.Add(orderItem);
+                //    context.SaveChanges();
+                //}
+                OrderItems.Add(orderItem);
         }
 
         public void RemoveItem(OrderItem orderItem)
-        {
+        {/*
+            using (OrderContext context = new OrderContext())
+            {
+                OrderItem orderitem = context.OrderItems.Include("Goods")
+                    .FirstOrDefault(oi => oi.OrderID == this.OrderId);
+                context.OrderItems.Remove(orderitem);
+                context.SaveChanges();
+            }*/
             OrderItems.Remove(orderItem);
         }
 

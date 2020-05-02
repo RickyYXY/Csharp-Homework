@@ -137,11 +137,23 @@ namespace OrderApp
 
         public void UpdateOrder(Order newOrder)
         {
-            Order oldOrder = GetOrder(newOrder.OrderID);
-            if (oldOrder == null)
-                throw new ApplicationException($"修改错误：订单 {newOrder.OrderID} 不存在!");
+            //Order oldOrder = GetOrder(newOrder.OrderID);
+            
             using (var db = new OScontext())
             {
+                var oldOrder = db.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.OrderItems)
+                    .Include(o => o.OrderItems.Select(item => item.GoodsItem))
+                    .FirstOrDefault(o => o.OrderID == newOrder.OrderID);
+                if (oldOrder == null)
+                    throw new ApplicationException($"修改错误：订单 {newOrder.OrderID} 不存在!");
+                for (int i = 0; i < oldOrder.OrderItems.Count; i++)
+                {
+                    db.Goods.Remove(oldOrder.OrderItems[i].GoodsItem);
+                    db.OrderItems.Remove(oldOrder.OrderItems[i]);
+                }
+                db.Customers.Remove(oldOrder.Customer);
                 db.Orders.Remove(oldOrder);
                 db.Orders.Add(newOrder);
                 db.SaveChanges();
