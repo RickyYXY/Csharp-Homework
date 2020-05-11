@@ -86,5 +86,45 @@ namespace WebOrderService.Controllers
             }
             return order;
         }
+
+        //PUT: api/order/{id}
+        [HttpPut("{id}")]
+        public ActionResult<Order>UpdateOrder(string id,Order order)
+        {
+            if(id!=order.Id)
+                return BadRequest("Id cannot be modified!");
+            try
+            {
+                orderContext.Entry(order).State = EntityState.Modified;
+                orderContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                string error = e.Message;
+                if (e.InnerException != null) error = e.InnerException.Message;
+                return BadRequest(error);
+            }
+            return NoContent();
+        }
+
+        //DELETE: api/order/{id}
+        [HttpDelete("{id}")]
+        public ActionResult<Order>DeleteOrder(string id)
+        {
+            try
+            {
+                var order = orderContext.Orders.FirstOrDefault(o => o.Id == id);
+                if(order!=null)
+                {
+                    orderContext.Orders.Remove(order);
+                    orderContext.SaveChanges();
+                }                
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.InnerException.Message);
+            }
+            return NoContent();
+        }
     }
 }
