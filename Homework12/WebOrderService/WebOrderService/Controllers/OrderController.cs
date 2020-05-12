@@ -26,6 +26,28 @@ namespace WebOrderService.Controllers
                 .Include(o => o.Customer);
         }
 
+        //GET: api/order/ini
+        //初始化
+        [HttpGet("ini")]
+        public ActionResult<List<Order>>InitializeOrders()
+        {
+            Order order = new Order(new Customer("li"), new List<OrderItem>());
+            order.AddItem(new OrderItem(1, new Goods("apple", 100.0), 10));
+            Order order2 = new Order(new Customer("zhang"), new List<OrderItem>());
+            order2.AddItem(new OrderItem(1, new Goods("egg", 200.0), 10));
+            try
+            {
+                orderContext.Orders.Add(order);
+                orderContext.Orders.Add(order2);
+                orderContext.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            return AllOrders().ToList();
+        }
+
         //GET: api/order
         [HttpGet]
         public ActionResult<List<Order>>GetAllOrders()
