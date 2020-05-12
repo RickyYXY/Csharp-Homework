@@ -68,19 +68,19 @@ namespace WebOrderService.Controllers
 
         //GET: api/order/goods?name=
         [HttpGet("goods")]
-        public ActionResult<List<Order>>GetOrderByGoodsName(string goodsName)
+        public ActionResult<List<Order>>GetOrderByGoodsName(string name)
         {
             var orders = AllOrders()
-          .Where(o => o.Items.Count(i => i.GoodsItem.Name == goodsName) > 0);
+          .Where(o => o.Items.Count(i => i.GoodsItem.Name == name) > 0);
             return orders.ToList();
         }
 
         //GET: api/order/customer?name=
         [HttpGet("customer")]
-        public ActionResult<List<Order>>GetOrderByCustomerName(string customerName)
+        public ActionResult<List<Order>>GetOrderByCustomerName(string name)
         {
             var orders = AllOrders()
-          .Where(o => o.Customer.Name == customerName);
+          .Where(o => o.Customer.Name == name);
             return orders.ToList();
         }
 
@@ -135,9 +135,15 @@ namespace WebOrderService.Controllers
         {
             try
             {
-                var order = orderContext.Orders.FirstOrDefault(o => o.Id == id);
+                var order = AllOrders().FirstOrDefault(o => o.Id == id);
                 if(order!=null)
                 {
+                    for(int i=0;i<order.Items.Count;i++)
+                    {
+                        orderContext.GoodItems.Remove(order.Items[i].GoodsItem);
+                        orderContext.OrderItems.Remove(order.Items[i]);
+                    }
+                    orderContext.Customers.Remove(order.Customer);
                     orderContext.Orders.Remove(order);
                     orderContext.SaveChanges();
                 }                
